@@ -19,4 +19,15 @@ class SongTest {
 
         Approvals.verify(song);
     }
+
+    @Test
+    void sing_a_song_with_minus_animals() throws Exception {
+
+        String song = tapSystemOut(() -> {
+            Song.main(new String[]{"cow", "cat", "spider", "fly", "horse"});
+        });
+
+        Approvals.verify(song);
+    }
+
 }

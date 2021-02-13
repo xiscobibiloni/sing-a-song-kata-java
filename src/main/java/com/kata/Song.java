@@ -1,5 +1,6 @@
 package com.kata;
 
+import java.util.List;
 import java.util.Map;
 
 class Song {
@@ -17,39 +18,44 @@ class Song {
     );
 
     public static void main(String[] args) {
-        StringBuilder builder = new StringBuilder();
 
-        builder.append(firstParagraph(args)).append("\n");
+        System.out.println(buildSong(args, List.of(args)));
+
+    }
+
+    private static String buildSong(String[] args, List<String> animals) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(firstParagraph(animals)).append("\n");
         for (int i = 1; i < args.length-1; i ++) {
-            builder.append(middleParagraphFull(args, i)).append("\n");
+            builder.append(middleParagraphFull(animals, i)).append("\n");
         }
         builder.append(lastParagraph(args));
-
-        System.out.println(builder.toString());
+        return builder.toString();
     }
 
-    private static String firstParagraph(String[] args) {
+    private static String firstParagraph(List<String> animals) {
 
-        return INITIAL_PHRASE + args[INITIAL_POSITION_LIST] + ".\n" +
-            ANIMAL_PHRASES.get(args[INITIAL_POSITION_LIST]) + "\n";
+        return INITIAL_PHRASE + animals.get(INITIAL_POSITION_LIST) + ".\n" +
+            ANIMAL_PHRASES.get(animals.get(INITIAL_POSITION_LIST)) + "\n";
     }
 
-    private static String middleParagraphFull(String[] args, int animals) {
+    private static String middleParagraphFull(List<String> animals, int animalPosition) {
 
-        return INITIAL_PHRASE + args[animals] + ";\n" +
-            ANIMAL_PHRASES.get(args[animals]) + "\n" +
-            shallowedPhrases(args, animals) +
-            ANIMAL_PHRASES.get(args[INITIAL_POSITION_LIST]) + "\n";
+        return INITIAL_PHRASE + animals.get(animalPosition) + ";\n" +
+            ANIMAL_PHRASES.get(animals.get(animalPosition)) + "\n" +
+            shallowedPhrases(animals, animalPosition) +
+            ANIMAL_PHRASES.get(animals.get(INITIAL_POSITION_LIST)) + "\n";
     }
 
-    private static String shallowedPhrases(String[] args, int animals) {
+    private static String shallowedPhrases(List<String> animals, int animalPosition) {
         StringBuilder shallowedPhrasesBuilder = new StringBuilder("");
-        for (int i = animals; i > INITIAL_POSITION_LIST; i--) {
+        for (int i = animalPosition; i > INITIAL_POSITION_LIST; i--) {
             String lastSymbol = i == 1 ? ";" : ",";
             shallowedPhrasesBuilder
                     .append("She swallowed the ")
-                    .append(args[i]).append(" to catch the ")
-                    .append(args[i-1])
+                    .append(animals.get(i))
+                    .append(" to catch the ")
+                    .append(animals.get(i-1))
                     .append(lastSymbol)
                     .append("\n");
         }
